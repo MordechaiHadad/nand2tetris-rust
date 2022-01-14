@@ -15,8 +15,8 @@ pub fn and(x: bool, y: bool) -> bool {
 }
 
 pub fn or(x: bool, y: bool) -> bool {
-    let a = nand(x, y);
-    let b = nand(x, y);
+    let a = nand(x, x);
+    let b = nand(y, y);
     nand(a, b)
 }
 
@@ -124,7 +124,9 @@ pub fn mux_8_way_16(
     g: [bool; 16],
     h: [bool; 16],
     sel: [bool; 3],
-) -> [bool; 16] {
+) -> [bool; 16] {        /* Nand(a=a, b=b, out=c);
+    Or(a=a, b=b, out=d);
+    And(a=c, b=d, out=out); */
     let mux1 = mux_4_way_16(a, b, c, d, sel[0..1].try_into().unwrap());
     let mux2 = mux_4_way_16(e, f, g, h, sel[0..1].try_into().unwrap());
     mux_16(mux1, mux2, sel[2])
